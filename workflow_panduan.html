@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workflow & Panduan Aplikasi KotoCraft</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        primaryColor: '#1e3a5f',
+        primaryTextColor: '#e2e8f0',
+        primaryBorderColor: '#4a9eff',
+        lineColor: '#4a9eff',
+        secondaryColor: '#2d1b4e',
+        tertiaryColor: '#1a3332',
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '12px',
+        nodeBorder: '#4a9eff',
+        mainBkg: '#1e3a5f',
+        clusterBkg: '#0f2547',
+        edgeLabelBackground: '#1a1a2e',
+        nodeTextColor: '#e2e8f0'
+      },
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: false,
+        curve: 'basis',
+        padding: 12,
+        nodeSpacing: 40,
+        rankSpacing: 55
+      }
+    });
+  </script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a2332;
+      --bg-card-hover: #1e2b3d;
+      --bg-elevated: #243044;
+      --accent-blue: #4a9eff;
+      --accent-cyan: #22d3ee;
+      --accent-purple: #a78bfa;
+      --accent-gold: #f59e0b;
+      --accent-green: #34d399;
+      --accent-red: #f87171;
+      --accent-pink: #f472b6;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #1e293b;
+      --border-active: #334155;
+      --glow-blue: rgba(74, 158, 255, 0.15);
+      --glow-purple: rgba(167, 139, 250, 0.15);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .jp { font-family: 'Noto Sans JP', 'Inter', sans-serif; }
+
+    /* ============ ANIMATED BG ============ */
+    .bg-pattern {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    }
+    .bg-pattern::before {
+      content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, var(--glow-blue), transparent 70%);
+      top: -200px; right: -200px; animation: float1 20s ease-in-out infinite;
+    }
+    .bg-pattern::after {
+      content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, var(--glow-purple), transparent 70%);
+      bottom: -150px; left: -150px; animation: float2 25s ease-in-out infinite;
+    }
+    @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-80px,60px)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,-80px)} }
+
+    /* ============ NAV ============ */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,14,26,0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); padding: 0 40px;
+    }
+    .top-nav-inner {
+      max-width: 1200px; margin: 0 auto; display: flex;
+      align-items: center; justify-content: space-between; height: 60px;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: var(--text-primary); }
+    .logo span { color: var(--accent-blue); }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none; font-size: 13px; font-weight: 500;
+      padding: 7px 13px; border-radius: var(--radius-sm); transition: var(--transition);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--bg-elevated); }
+
+    /* ============ LAYOUT ============ */
+    .main-container {
+      position: relative; z-index: 1; max-width: 960px;
+      margin: 0 auto; padding: 90px 28px 80px;
+    }
+
+    /* ============ HERO ============ */
+    .hero { text-align: center; margin-bottom: 56px; padding: 50px 20px; }
+    .hero-badge {
+      display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent-blue);
+      background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.2);
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 38px; font-weight: 900; line-height: 1.15; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent-blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 14px;
+    }
+    .hero p { font-size: 15px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; }
+
+    /* ============ SECTION ============ */
+    section { margin-bottom: 52px; }
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    }
+    .section-number {
+      width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; color: var(--accent-blue);
+      background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.25);
+      border-radius: 10px; flex-shrink: 0;
+    }
+    .section-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+    .section-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+    h3 { font-size: 15px; font-weight: 700; margin: 24px 0 12px; }
+    p { color: var(--text-secondary); margin-bottom: 14px; font-size: 14px; }
+    ul, ol { margin-bottom: 18px; margin-left: 20px; color: var(--text-secondary); font-size: 14px; }
+    li { margin-bottom: 8px; }
+    li b { color: var(--text-primary); }
+    code {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      background: rgba(74,158,255,0.1); color: var(--accent-cyan);
+      padding: 2px 6px; border-radius: 5px; border: 1px solid rgba(74,158,255,0.15);
+    }
+
+    /* ============ FILE CARDS ============ */
+    .file-grid { display: grid; gap: 10px; }
+    .file-card {
+      display: grid; grid-template-columns: 200px 1fr; gap: 14px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 14px 18px; transition: var(--transition);
+    }
+    .file-card:hover {
+      border-color: var(--accent-blue); background: var(--bg-card-hover);
+      box-shadow: 0 0 16px var(--glow-blue);
+    }
+    .file-name {
+      font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600;
+      color: var(--accent-blue); display: flex; align-items: center; gap: 8px;
+    }
+    .file-name .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .file-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .file-category {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      padding: 9px 18px; border-radius: var(--radius-sm); margin-bottom: 4px; margin-top: 16px;
+    }
+    .file-category:first-of-type { margin-top: 0; }
+    .cat-entry { background: rgba(74,158,255,0.08); color: var(--accent-blue); border: 1px solid rgba(74,158,255,0.15); }
+    .cat-flame { background: rgba(248,113,113,0.08); color: var(--accent-red); border: 1px solid rgba(248,113,113,0.15); }
+    .cat-kamus { background: rgba(52,211,153,0.08); color: var(--accent-green); border: 1px solid rgba(52,211,153,0.15); }
+    .cat-service { background: rgba(167,139,250,0.08); color: var(--accent-purple); border: 1px solid rgba(167,139,250,0.15); }
+
+    /* ============ LEVEL CARDS ============ */
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
+    .level-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 16px 18px; transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .level-card:hover {
+      border-color: var(--border-active); transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    .level-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .level-card.hiragana::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
+    .level-card.katakana::before { background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); }
+    .level-card.mixed::before { background: linear-gradient(90deg, var(--accent-gold), var(--accent-red)); }
+    .level-card.random-kata::before { background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple)); }
+    .level-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .level-num { font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 1px; }
+    .level-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; letter-spacing: 0.3px;
+    }
+    .badge-hira { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+    .badge-kata { background: rgba(74,158,255,0.12); color: var(--accent-blue); }
+    .badge-mixed { background: rgba(245,158,11,0.12); color: var(--accent-gold); }
+    .badge-random { background: rgba(244,114,182,0.12); color: var(--accent-pink); }
+    .level-name { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .level-chars {
+      font-family: 'Noto Sans JP', 'Inter', sans-serif;
+      font-size: 15px; color: var(--text-secondary); line-height: 1.8; letter-spacing: 2px;
+    }
+    .level-chars.small-text { font-size: 12.5px; letter-spacing: 0; }
+    .level-meta { margin-top: 8px; font-size: 11px; color: var(--text-muted); }
+
+    /* ============ DIAGRAM ============ */
+    .diagram-container {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); margin: 24px 0; overflow: hidden;
+    }
+    .diagram-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg-secondary);
+    }
+    .diagram-title { font-size: 13px; font-weight: 700; }
+    .diagram-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .diagram-body { padding: 28px 20px; overflow-x: auto; display: flex; justify-content: center; }
+    .mermaid { width: 100%; max-width: 100%; }
+
+    /* ============ COLLAPSIBLE ============ */
+    .collapsible {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); margin-bottom: 10px; overflow: hidden;
+    }
+    .collapsible:hover { border-color: var(--border-active); }
+    .collapsible-trigger {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; background: none; border: none;
+      color: var(--text-primary); font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    .collapsible-trigger:hover { background: var(--bg-card-hover); }
+    .collapsible-arrow {
+      width: 20px; height: 20px; border-radius: 50%; background: var(--bg-elevated);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s ease; font-size: 10px; color: var(--text-muted);
+    }
+    .collapsible.open .collapsible-arrow { transform: rotate(90deg); }
+    .collapsible-content {
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 18px;
+    }
+    .collapsible.open .collapsible-content { max-height: 2000px; padding: 0 18px 18px; }
+
+    /* ============ ALERT ============ */
+    .alert-box {
+      border-radius: var(--radius-md); padding: 16px 20px; margin: 18px 0;
+      font-size: 13px; line-height: 1.6; border: 1px solid;
+    }
+    .alert-box strong {
+      display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; margin-bottom: 5px;
+    }
+    .alert-info { background: rgba(74,158,255,0.06); border-color: rgba(74,158,255,0.2); color: var(--text-secondary); }
+    .alert-info strong { color: var(--accent-blue); }
+    .alert-success { background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.2); color: var(--text-secondary); }
+    .alert-success strong { color: var(--accent-green); }
+    .alert-warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.2); color: var(--text-secondary); }
+    .alert-warn strong { color: var(--accent-gold); }
+
+    /* ============ STEPS ============ */
+    .step-list { list-style: none; margin-left: 0; counter-reset: step-counter; }
+    .step-list li {
+      counter-increment: step-counter; position: relative;
+      padding-left: 44px; margin-bottom: 16px;
+    }
+    .step-list li::before {
+      content: counter(step-counter); position: absolute; left: 0; top: 2px;
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; font-size: 12px; font-weight: 800;
+      color: var(--accent-blue); background: rgba(74,158,255,0.1);
+      border: 1px solid rgba(74,158,255,0.2);
+    }
+
+    .stars-row { display: flex; gap: 10px; margin: 8px 0 14px 44px; flex-wrap: wrap; }
+    .star-item {
+      font-size: 12px; padding: 5px 12px; border-radius: var(--radius-sm);
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .star-item b { color: var(--accent-gold); }
+
+    /* ============ WORLD MAP ============ */
+    .wm-grid { display: grid; gap: 10px; }
+    .wm-card {
+      display: grid; grid-template-columns: 160px 1fr 150px; gap: 14px; align-items: center;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 14px 18px; transition: var(--transition);
+    }
+    .wm-card:hover { border-color: var(--border-active); background: var(--bg-card-hover); }
+    .wm-area { font-size: 13px; font-weight: 700; }
+    .wm-area small { display: block; font-size: 11px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+    .wm-game { font-size: 12.5px; color: var(--text-secondary); }
+    .wm-req { font-size: 11px; color: var(--text-muted); text-align: right; }
+
+    .prototype-badge {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+      padding: 3px 10px; border-radius: 20px; margin-left: 8px;
+      background: rgba(245,158,11,0.12); color: var(--accent-gold);
+      border: 1px solid rgba(245,158,11,0.2); vertical-align: middle;
+    }
+
+    /* ============ TECH CARD & GRID ============ */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      transition: var(--transition);
+    }
+    .tech-card:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-card-hover);
+      box-shadow: 0 0 16px var(--glow-blue);
+      transform: translateY(-2px);
+    }
+    .tech-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .tech-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    .tech-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ============ PROS & CONS ============ */
+    .pros-cons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .pros-card {
+      background: rgba(52, 211, 153, 0.03);
+      border: 1px solid rgba(52, 211, 153, 0.15);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .cons-card {
+      background: rgba(248, 113, 113, 0.03);
+      border: 1px solid rgba(248, 113, 113, 0.15);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .pros-cons-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+    }
+    .pros-cons-list {
+      list-style: none;
+      margin-left: 0;
+    }
+    .pros-cons-list li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .pros-cons-list li::before {
+      position: absolute;
+      left: 0;
+      top: 1px;
+      font-weight: 800;
+    }
+    .pros-list li::before {
+      content: '✓';
+      color: var(--accent-green);
+    }
+    .cons-list li::before {
+      content: '✗';
+      color: var(--accent-red);
+    }
+
+    /* ============ FEATURE LIST ============ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .feature-item-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      transition: var(--transition);
+    }
+    .feature-item-card:hover {
+      border-color: var(--border-active);
+      background: var(--bg-card-hover);
+    }
+    .feature-item-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .feature-item-icon {
+      font-size: 18px;
+    }
+    .feature-item-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .feature-item-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .feature-item-desc ul {
+      margin-top: 8px;
+      margin-bottom: 0;
+      margin-left: 16px;
+    }
+    .feature-item-desc li {
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      text-align: center; padding: 36px 0; border-top: 1px solid var(--border); margin-top: 40px;
+    }
+    .footer p { font-size: 12px; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .main-container { padding: 76px 14px 40px; }
+      .hero h1 { font-size: 26px; }
+      .file-card { grid-template-columns: 1fr; }
+      .level-grid { grid-template-columns: 1fr; }
+      .wm-card { grid-template-columns: 1fr; gap: 6px; }
+      .wm-req { text-align: left; }
+      .nav-links { display: none; }
+      .top-nav { padding: 0 14px; }
+      .tech-grid { grid-template-columns: 1fr; }
+      .pros-cons-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-pattern"></div>
+
+  <nav class="top-nav" id="topNav">
+    <div class="top-nav-inner">
+      <div class="logo">Koto<span>Craft</span></div>
+      <div class="nav-links">
+        <a href="#pengenalan">Pengenalan & Fitur</a>
+        <a href="#files">File Utama</a>
+        <a href="#levels">Daftar Level</a>
+        <a href="#gameplay">Gameplay</a>
+        <a href="#materi">Materi</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+
+    <div class="hero">
+      <div class="hero-badge">KotoCraft Documentation</div>
+      <h1>Panduan Alur Kerja Aplikasi</h1>
+      <p>Arsitektur visual alur gameplay RPG 2D dan modul pembelajaran bahasa Jepang interaktif berbasis Flame Engine</p>
+    </div>
+
+    <!-- ============ SECTION 1: PENGENALAN & TEKNOLOGI ============ -->
+    <section id="pengenalan">
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <div>
+          <div class="section-title">Pengenalan Teknologi & Fitur Utama</div>
+          <div class="section-subtitle">Pondasi pengembangan game edukasi KotoCraft</div>
+        </div>
+      </div>
+
+      <p>KotoCraft adalah game edukasi interaktif RPG 2D yang dirancang khusus untuk mempermudah pembelajaran aksara Jepang (Hiragana dan Katakana) serta kosakata dasarnya. Game ini memadukan keseruan elemen petualangan RPG dengan pembelajaran bahasa Jepang yang sistematis.</p>
+
+      <h3>Teknologi yang Digunakan</h3>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tech-icon">📱</div>
+          <div class="tech-title">Flutter Framework</div>
+          <div class="tech-desc">Pondasi utama aplikasi. Framework UI buatan Google ini bertugas menangani struktur halaman non-game (menu utama, pengaturan, kamus, whiteboard menulis) secara cepat dan menghasilkan performa antar-muka yang sangat mulus di berbagai platform dengan satu basis kode.</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">🎮</div>
+          <div class="tech-title">Flame Game Engine</div>
+          <div class="tech-desc">Engine game modular 2D yang dibangun di atas Flutter. Flame bertugas menangani rendering grafis, loading tilemap peta (TMX), logika game loop, deteksi tabrakan (collision rintangan duri & huruf melayang), kamera, serta pergerakan karakter utama.</div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">🎯</div>
+          <div class="tech-title">Dart Language</div>
+          <div class="tech-desc">Bahasa pemrograman utama di balik KotoCraft. Dart menawarkan kecepatan eksekusi tinggi karena dikompilasi langsung ke kode mesin native (AOT) serta memiliki fitur Hot Reload yang mempercepat proses pengembangan logika game secara instan.</div>
+        </div>
+      </div>
+
+      <h3>Keuntungan & Kerugian Teknologi</h3>
+      <div class="pros-cons-grid">
+        <div class="pros-card">
+          <div class="pros-cons-title"><span style="color:var(--accent-green)">✔</span> Keuntungan</div>
+          <ul class="pros-cons-list pros-list">
+            <li><b>Single Codebase:</b> Aplikasi dapat dirilis ke Android, iOS, dan Web dari satu kode yang sama, menghemat waktu pengembangan.</li>
+            <li><b>Integrasi UI Sangat Mudah:</b> Sangat mudah menyisipkan menu UI standar Flutter (seperti whiteboard coretan dan TTS) langsung ke dalam kanvas game Flame.</li>
+            <li><b>Proses Dev Cepat:</b> Fitur Hot Reload/Restart mempermudah iterasi desain level dan perbaikan bug tanpa perlu menunggu kompilasi ulang yang lama.</li>
+            <li><b>Performa Lancar:</b> Kompilasi native Dart dan arsitektur Flame menjamin game berjalan mulus hingga 60 FPS pada perangkat seluler.</li>
+          </ul>
+        </div>
+        <div class="cons-card">
+          <div class="pros-cons-title"><span style="color:var(--accent-red)">✘</span> Kerugian</div>
+          <ul class="pros-cons-list cons-list">
+            <li><b>Ukuran File (APK) Lebih Besar:</b> Engine Flutter dan aset pendukung yang dikemas menyebabkan ukuran file awal aplikasi menjadi sedikit lebih besar.</li>
+            <li><b>Kurang Cocok untuk Game 3D:</b> Flame Engine khusus dirancang untuk game 2D. Sangat sulit dan tidak disarankan untuk mengembangkan game 3D kompleks di sini.</li>
+            <li><b>Ekosistem Game Terbatas:</b> Pustaka plugin pihak ketiga khusus game tidak sebanyak engine khusus game lain (seperti Unity atau Godot).</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Alur Kerja Game (Game Workflow) secara Sederhana</h3>
+      <p>Bagi pemain, KotoCraft menawarkan alur bermain yang sangat ramah pengguna dan terstruktur:</p>
+      <ol class="step-list">
+        <li><b>Belajar Teori di Kamus:</b> Sebelum mulai petualangan, pemain direkomendasikan masuk ke menu <b>Kamus Materi</b>. Di sini mereka belajar cara membaca huruf, mendengarkan pengucapan (TTS), dan melatih tulisan tangan (coretan jari). Setiap huruf yang selesai dipelajari memberikan hadiah XP.</li>
+        <li><b>Memilih Level Petualangan:</b> Pemain masuk ke menu <b>Start/Lanjutkan</b>. Pemain memilih level (dari Level 1 hingga 10). Level 1 terbuka di awal, sedangkan level berikutnya terkunci dan hanya terbuka setelah level sebelumnya berhasil diselesaikan.</li>
+        <li><b>Memilih Mode Kesulitan:</b> Pada Level 1 hingga 4, pemain dapat memilih mode <b>Easy</b> (fokus belajar tanpa rintangan) atau <b>Normal</b> (dilengkapi rintangan duri yang menantang kelincahan pemain). Level 5 ke atas dijalankan dalam mode Easy.</li>
+        <li><b>Eksplorasi & Berburu Huruf:</b> Di dalam game RPG 2D, pemain mengendalikan karakter berjalan mengeksplorasi peta untuk mencari huruf-huruf Jepang melayang.</li>
+        <li><b>Kuis Kejutan (Instan):</b> Ketika karakter menyentuh huruf melayang, game otomatis dijeda, dan muncul kuis pilihan ganda untuk menebak romaji huruf tersebut. Jika menjawab dengan benar, pemain mendapat +10 XP. Jika salah, jumlah kesalahan bertambah dan nyawa (HP) bisa berkurang jika bermain di mode Normal.</li>
+        <li><b>Evaluasi Akhir Level:</b> Setelah mengumpulkan seluruh huruf di peta, level selesai. Pemain diberikan penilaian berupa bintang (1 sampai 3 bintang) berdasarkan jumlah kesalahan menjawab. Progres level dan total XP yang terkumpul akan langsung disimpan secara permanen.</li>
+      </ol>
+
+      <h3>Detail Fitur Unggulan Aplikasi</h3>
+      <div class="features-grid">
+        <div class="feature-item-card">
+          <div class="feature-item-header">
+            <span class="feature-item-icon">📝</span>
+            <span class="feature-item-title">Kamus Interaktif & Fitur Coret Huruf (Whiteboard)</span>
+          </div>
+          <div class="feature-item-desc">
+            Ini adalah modul belajar mandiri yang sangat rinci:
+            <ul>
+              <li><b>Animasi Stroke Order (Urutan Goresan):</b> Setiap huruf dilengkapi panduan visual urutan penulisan yang benar dari goresan pertama hingga terakhir agar pengguna belajar menulis dengan presisi, bukan sekadar menggambar bebas.</li>
+              <li><b>Kanvas Coretan (Interactive Canvas):</b> Pengguna dapat menulis langsung dengan jari atau stylus di atas kanvas digital yang disediakan untuk mempraktikkan tulisan mereka secara langsung.</li>
+              <li><b>Text-to-Speech (TTS) Pengucapan:</b> Dilengkapi tombol suara native Jepang untuk melatih pendengaran (listening) dan pengucapan (pronunciation) secara akurat.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature-item-card">
+          <div class="feature-item-header">
+            <span class="feature-item-icon">🗺️</span>
+            <span class="feature-item-title">Eksplorasi RPG 2D Top-Down</span>
+          </div>
+          <div class="feature-item-desc">Peta petualangan 2D interaktif berbasis tilemap (TMX) di mana pemain mengendalikan karakter utama dengan D-Pad virtual di layar atau tombol WASD/Arah di keyboard desktop. Pemain dapat menikmati dunia game sambil mencari huruf yang tersembunyi di berbagai sudut peta.</div>
+        </div>
+
+        <div class="feature-item-card">
+          <div class="feature-item-header">
+            <span class="feature-item-icon">🔄</span>
+            <span class="feature-item-title">Kuis Pilihan Ganda Dinamis & Shuffle Mode</span>
+          </div>
+          <div class="feature-item-desc">
+            Untuk menguji pemahaman, kuis romaji muncul secara otomatis.
+            <ul>
+              <li><b>Sistem Pengacakan Jawaban:</b> Pilihan jawaban diacak setiap kali kuis dipicu, menghindari sistem hafalan letak tombol.</li>
+              <li><b>Level 9 & 10 (Katakana Acak):</b> Khusus level ini, huruf Katakana yang disebar di peta diacak secara total dari bank data Katakana setiap kali pemain memulai ulang game, memberikan tantangan belajar baru yang dinamis.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature-item-card">
+          <div class="feature-item-header">
+            <span class="feature-item-icon">⚠️</span>
+            <span class="feature-item-title">Sistem HP, Rintangan, & Mode Kesulitan (Normal Mode)</span>
+          </div>
+          <div class="feature-item-desc">Memberikan bumbu tantangan RPG aksi di mana peta level memiliki jebakan duri. Jika karakter menabrak rintangan ini, nyawa (HP) pemain akan berkurang. Jika HP habis, game berakhir (Game Over). Fitur ini melatih kecepatan reaksi motorik di samping kemampuan akademis.</div>
+        </div>
+
+        <div class="feature-item-card">
+          <div class="feature-item-header">
+            <span class="feature-item-icon">⚡</span>
+            <span class="feature-item-title">Sistem XP Terpadu & Level Unlock</span>
+          </div>
+          <div class="feature-item-desc">Poin pengalaman (XP) yang diperoleh dari berpetualang (+10 XP per jawaban kuis benar) dan belajar di kamus (+5 XP per huruf baru) digabungkan menjadi satu nilai kumulatif di profil pemain. Sistem otomatis melacak level mana saja yang sudah berhasil diselesaikan (unlock level progresif).</div>
+        </div>
+
+
+        <div class="feature-item-card">
+          <div class="feature-item-header">
+            <span class="feature-item-icon">💾</span>
+            <span class="feature-item-title">Persistensi Data (Autosave)</span>
+          </div>
+          <div class="feature-item-desc">Menggunakan <code>SharedPreferences</code> untuk menyimpan seluruh riwayat kemajuan pemain secara otomatis (level yang terbuka, jumlah bintang per level, akumulasi XP, status bab kamus yang dibaca) sehingga progres tidak akan hilang saat aplikasi ditutup.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2: FILES ============ -->
+    <section id="files">
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <div>
+          <div class="section-title">Peta Navigasi File Utama</div>
+          <div class="section-subtitle">File kode sumber utama yang mengontrol logika aplikasi</div>
+        </div>
+      </div>
+
+      <div class="file-category cat-entry">Entry & Menu</div>
+      <div class="file-grid">
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-blue)"></span>main.dart</div>
+          <div class="file-desc">Inisialisasi service utama (TTS, simpan progres, suara, learning provider) dan memaksa orientasi landscape.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-blue)"></span>main_menu_screen.dart</div>
+          <div class="file-desc">Layar beranda utama dengan akses ke mode petualangan, kamus materi, setelan volume, dan reset data.</div>
+        </div>
+      </div>
+
+      <div class="file-category cat-flame">Eksplorasi RPG (Flame Engine)</div>
+      <div class="file-grid">
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-red)"></span>level_select_screen.dart</div>
+          <div class="file-desc">Grid peta wilayah level 1-10 dengan indikator bintang, kunci progres, dan dialog info level.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-red)"></span>game_screen.dart</div>
+          <div class="file-desc">Scaffold pembungkus game widget Flame. Menangani D-Pad virtual, HUD nyawa, dan dialog kuis.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-red)"></span>game_main.dart</div>
+          <div class="file-desc">Kelas inti Flame Game untuk koordinasi physics tabrakan, pemuatan peta TMX, dan kamera.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-red)"></span>level_data.dart</div>
+          <div class="file-desc">Registry statis seluruh 10 level game. Mendefinisikan file peta TMX, penempatan huruf, dan tipe konten per level.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-red)"></span>tiled_map_loader.dart</div>
+          <div class="file-desc">Pemuat peta TMX via flame_tiled. Mengekstrak collision, lokasi collectible, dan rintangan. Untuk level 9-10, mengganti konten dengan Katakana acak.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-red)"></span>quiz_overlay.dart</div>
+          <div class="file-desc">Overlay kuis pilihan ganda yang muncul saat pemain menyentuh huruf Jepang. Mendukung layout portrait dan landscape.</div>
+        </div>
+      </div>
+
+      <div class="file-category cat-kamus">Kamus & Teori</div>
+      <div class="file-grid">
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-green)"></span>materi_chapters_screen.dart</div>
+          <div class="file-desc">Menu seleksi Bab (Bab 1: Desa Parang, Bab 2: Jikoshoukai). Bab 2 terkunci hingga Bab 1 diselesaikan.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-green)"></span>materi_screen.dart</div>
+          <div class="file-desc">Kamus visual interaktif tiga tab (Hiragana, Katakana, Kosakata) dengan TTS, canvas coretan, dan reward XP.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-green)"></span>chapter_content_viewer_screen.dart</div>
+          <div class="file-desc">Viewer slide modular berbasis swipe untuk gambar materi kontekstual (digunakan oleh Bab 2).</div>
+        </div>
+      </div>
+
+      <div class="file-category cat-service">Servis & State Management</div>
+      <div class="file-grid">
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-purple)"></span>game_state.dart</div>
+          <div class="file-desc">State management global via ChangeNotifier. Menyimpan level selesai, bintang, dan total XP kumulatif (game + kamus).</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-purple)"></span>save_service.dart</div>
+          <div class="file-desc">Penyimpanan lokal berbasis SharedPreferences. Menyimpan progres level, bintang, XP, karakter, dan progres belajar.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-purple)"></span>learning_provider.dart</div>
+          <div class="file-desc">Provider untuk melacak huruf yang sudah dipelajari di kamus. Progres persisten via SharedPreferences.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name"><span class="dot" style="background:var(--accent-purple)"></span>audio_service.dart</div>
+          <div class="file-desc">Pengelola audio BGM untuk menu dan gameplay. Mendukung pengaturan volume dan transisi antar lagu.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 3: LEVELS ============ -->
+    <section id="levels">
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <div>
+          <div class="section-title">Daftar Level Game</div>
+          <div class="section-subtitle">10 level aktif dengan konten pembelajaran bertahap</div>
+        </div>
+      </div>
+
+      <div class="level-grid">
+        <div class="level-card hiragana">
+          <div class="level-header">
+            <span class="level-num">LEVEL 01</span>
+            <span class="level-badge badge-hira">Hiragana</span>
+          </div>
+          <div class="level-name">Desa Parang</div>
+          <div class="level-chars jp">あ い う え お か き く</div>
+          <div class="level-meta">8 huruf / Mode Normal tersedia</div>
+        </div>
+
+        <div class="level-card hiragana">
+          <div class="level-header">
+            <span class="level-num">LEVEL 02</span>
+            <span class="level-badge badge-hira">Hiragana</span>
+          </div>
+          <div class="level-name">Hutan Megamendung</div>
+          <div class="level-chars jp">け こ さ し す せ そ た ち つ て と</div>
+          <div class="level-meta">12 huruf / Mode Normal tersedia</div>
+        </div>
+
+        <div class="level-card hiragana">
+          <div class="level-header">
+            <span class="level-num">LEVEL 03</span>
+            <span class="level-badge badge-hira">Hiragana</span>
+          </div>
+          <div class="level-name">Gunung Kawung</div>
+          <div class="level-chars jp">な に ぬ ね の は ひ ふ へ ほ ま み む め も や</div>
+          <div class="level-meta">16 huruf / Mode Normal tersedia</div>
+        </div>
+
+        <div class="level-card hiragana">
+          <div class="level-header">
+            <span class="level-num">LEVEL 04</span>
+            <span class="level-badge badge-hira">Hiragana</span>
+          </div>
+          <div class="level-name">Lembah Truntum</div>
+          <div class="level-chars jp">ゆ よ ら り る れ ろ わ を ん</div>
+          <div class="level-meta">10 huruf / Mode Normal tersedia</div>
+        </div>
+
+        <div class="level-card katakana">
+          <div class="level-header">
+            <span class="level-num">LEVEL 05</span>
+            <span class="level-badge badge-kata">Katakana</span>
+          </div>
+          <div class="level-name">Pulau Sogan</div>
+          <div class="level-chars jp">ア イ ウ エ オ カ キ ク ケ コ</div>
+          <div class="level-meta">10 huruf / Easy only</div>
+        </div>
+
+        <div class="level-card katakana">
+          <div class="level-header">
+            <span class="level-num">LEVEL 06</span>
+            <span class="level-badge badge-kata">Katakana</span>
+          </div>
+          <div class="level-name">Benteng Sido Luhur</div>
+          <div class="level-chars jp">サ シ ス セ ソ タ チ ツ テ ト</div>
+          <div class="level-meta">10 huruf / Easy only</div>
+        </div>
+
+        <div class="level-card katakana">
+          <div class="level-header">
+            <span class="level-num">LEVEL 07</span>
+            <span class="level-badge badge-kata">Katakana</span>
+          </div>
+          <div class="level-name">Kuil Ceplok</div>
+          <div class="level-chars jp">ナ ニ ヌ ネ ノ ハ ヒ フ ヘ ホ</div>
+          <div class="level-meta">10 huruf / Easy only</div>
+        </div>
+
+        <div class="level-card mixed">
+          <div class="level-header">
+            <span class="level-num">LEVEL 08</span>
+            <span class="level-badge badge-mixed">Campuran</span>
+          </div>
+          <div class="level-name">Istana Nusantara</div>
+          <div class="level-chars jp">あ ア か カ さ サ た タ な ナ</div>
+          <div class="level-meta">10 huruf campuran Hiragana + Katakana / Easy only</div>
+        </div>
+
+        <div class="level-card random-kata">
+          <div class="level-header">
+            <span class="level-num">LEVEL 09</span>
+            <span class="level-badge badge-random">Katakana Acak</span>
+          </div>
+          <div class="level-name">Kota Kastil Jokamachi</div>
+          <div class="level-chars small-text">Katakana acak dari seluruh daftar, di-shuffle setiap kali bermain</div>
+          <div class="level-meta">Easy only</div>
+        </div>
+
+        <div class="level-card random-kata">
+          <div class="level-header">
+            <span class="level-num">LEVEL 10</span>
+            <span class="level-badge badge-random">Katakana Acak</span>
+          </div>
+          <div class="level-name">Festival Matsuri</div>
+          <div class="level-chars small-text">Katakana acak dari seluruh daftar, di-shuffle setiap kali bermain</div>
+          <div class="level-meta">Easy only</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 4: GAMEPLAY ============ -->
+    <section id="gameplay">
+      <div class="section-header">
+        <div class="section-number">4</div>
+        <div>
+          <div class="section-title">Alur Gameplay Utama</div>
+          <div class="section-subtitle">Mekanisme eksplorasi 2D top-down dengan kuis evaluasi dinamis</div>
+        </div>
+      </div>
+
+      <p>Mekanisme gameplay menggabungkan eksplorasi dunia 2D tipe top-down menggunakan engine Flame dengan kuis evaluasi dinamis ketika item huruf Jepang ditemukan oleh pemain.</p>
+
+      <h3>Langkah Operasional:</h3>
+      <ol class="step-list">
+        <li><b>Memilih Level</b> &mdash; Dari beranda, tekan START/LANJUTKAN untuk membuka grid wilayah. Level 1 terbuka secara default, level selanjutnya dikunci berurutan.</li>
+        <li><b>Memilih Kesulitan</b> &mdash; Level 1-4 memiliki pilihan Easy (tanpa rintangan) atau Normal (dengan duri/traps). Level 5-10 hanya Easy.</li>
+        <li><b>Eksplorasi Peta</b> &mdash; Gerakkan karakter menggunakan joystick virtual atau keyboard WASD untuk mencari huruf Jepang yang melayang.</li>
+        <li><b>Kuis Otomatis</b> &mdash; Saat menyentuh huruf, game pause dan kuis romaji 4 pilihan muncul. Benar = +10 XP, salah = +1 Mistake.</li>
+        <li><b>Sistem HP (Normal)</b> &mdash; Menabrak duri mengurangi HP. HP habis = Game Over.</li>
+        <li><b>Bintang & Selesai</b> &mdash; Semua huruf terkumpul = level selesai. Bintang berdasarkan kesalahan:</li>
+      </ol>
+
+      <div class="stars-row">
+        <span class="star-item"><b>3 Bintang</b> &mdash; 0 salah</span>
+        <span class="star-item"><b>2 Bintang</b> &mdash; 1-2 salah</span>
+        <span class="star-item"><b>1 Bintang</b> &mdash; 3+ salah</span>
+      </div>
+
+      <div class="alert-box alert-info">
+        <strong>Penyimpanan Progres</strong>
+        Kelulusan level disimpan permanen di SharedPreferences via SaveService. Data: level selesai, bintang, total XP, dan karakter avatar.
+      </div>
+
+      <div class="alert-box alert-success">
+        <strong>Sistem XP Terpadu</strong>
+        XP dari game (+10 per jawaban benar) dan XP dari kamus materi (+5 per huruf dipelajari) digabungkan menjadi satu nilai kumulatif yang ditampilkan di beranda.
+      </div>
+
+      <div class="diagram-container">
+        <div class="diagram-header">
+          <span class="diagram-title">Flowchart Alur Gameplay Utama</span>
+          <span class="diagram-label">Mermaid</span>
+        </div>
+        <div class="diagram-body">
+          <pre class="mermaid">
+          flowchart TD
+              A["Buka Aplikasi"] --> B["Menu Utama"]
+              B -->|"START"| C["Pilih Level"]
+              C --> D{"Level 1-4?"}
+              D -->|"Ya"| E["Pilih Easy / Normal"]
+              D -->|"Tidak"| F["Mulai Easy"]
+              E --> F
+              E --> G["Mulai Normal"]
+              F --> H["Eksplorasi Peta"]
+              G --> H
+              H -->|"Sentuh Huruf"| I["Kuis Muncul"]
+              I -->|"Benar"| J["+10 XP"]
+              I -->|"Salah"| K["+1 Mistake"]
+              J --> L{"Semua Terkumpul?"}
+              K --> L
+              L -->|"Belum"| H
+              L -->|"Sudah"| M["Hitung Bintang"]
+              M --> N["Simpan & Buka Level Berikut"]
+
+              G -->|"Tabrak Duri"| O["HP Berkurang"]
+              O --> P{"HP Habis?"}
+              P -->|"Ya"| Q["Game Over"]
+              P -->|"Tidak"| H
+              Q -->|"Coba Lagi"| H
+              Q -->|"Keluar"| B
+          </pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 5: MATERI ============ -->
+    <section id="materi">
+      <div class="section-header">
+        <div class="section-number">5</div>
+        <div>
+          <div class="section-title">Alur Pembelajaran Materi</div>
+          <div class="section-subtitle">Modul kamus teori dengan 2 bab bertahap dan sistem unlock</div>
+        </div>
+      </div>
+
+      <p>Modul Kamus Materi memberikan landasan teori sebelum pemain terjun ke level gameplay. Alur materi disusun berurutan dengan sistem unlock bertahap.</p>
+
+      <div class="collapsible open" id="bab1">
+        <button class="collapsible-trigger" onclick="toggleCollapsible('bab1')">
+          <span>Bab 1 &mdash; Desa Parang (Whiteboard Interaktif)</span>
+          <span class="collapsible-arrow">&#9654;</span>
+        </button>
+        <div class="collapsible-content">
+          <p>Pengenalan karakter dasar Jepang melalui tiga tab interaktif:</p>
+          <ol>
+            <li><b>Tab Hiragana & Katakana</b> &mdash; Grid visual huruf. Klik untuk membuka pop-up: TTS pengucapan, animasi stroke order, dan canvas latihan menulis. Setiap huruf baru = <code>+5 XP</code>.</li>
+            <li><b>Tab Kosakata</b> &mdash; Kartu kata benda/kerja dengan filter kategori dan audio TTS.</li>
+            <li><b>Penyelesaian</b> &mdash; Tombol SELANJUTNYA membuka galeri materi tambahan (zoomable). Menutup galeri memanggil <code>completeLevel('materi_1')</code> yang membuka Bab 2.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="collapsible" id="bab2">
+        <button class="collapsible-trigger" onclick="toggleCollapsible('bab2')">
+          <span>Bab 2 &mdash; Jikoshoukai (Slide Viewer)</span>
+          <span class="collapsible-arrow">&#9654;</span>
+        </button>
+        <div class="collapsible-content">
+          <p>Menggunakan ChapterContentViewerScreen dengan 4 slide gambar materi. Navigasi via tombol LANJUT/KEMBALI. Di slide terakhir, tombol SELESAI memanggil <code>completeLevel('materi_2')</code>.</p>
+        </div>
+      </div>
+
+      <div class="alert-box alert-success">
+        <strong>Persistensi Progres Belajar</strong>
+        Progres belajar kamus (huruf yang sudah dipelajari) disimpan permanen di SharedPreferences via LearningProvider. Saat aplikasi dibuka kembali, semua progres tetap ada. XP kamus terjumlah dengan XP gameplay.
+      </div>
+
+      <div class="diagram-container">
+        <div class="diagram-header">
+          <span class="diagram-title">Flowchart Alur Pembelajaran Materi</span>
+          <span class="diagram-label">Mermaid</span>
+        </div>
+        <div class="diagram-body">
+          <pre class="mermaid">
+          flowchart TD
+              A["Menu Utama"] -->|"MATERI"| B["Pilih Bab"]
+              B -->|"Bab 1"| C["Halaman Target"]
+              C -->|"Lanjut"| D["Menu Whiteboard"]
+              D --> E["Tab Hiragana"]
+              D --> F["Tab Katakana"]
+              D --> G["Tab Kosakata"]
+              E -->|"Tap Huruf"| H["Pop-up: TTS + Stroke + Canvas"]
+              F -->|"Tap Huruf"| H
+              G -->|"Tap Kata"| I["Audio TTS Kosakata"]
+              H -->|"+5 XP"| J["Progres Tersimpan"]
+              J --> K["Tombol SELANJUTNYA"]
+              I --> K
+              K --> L["Galeri Materi Tambahan"]
+              L -->|"Tutup"| M["Bab 1 Selesai, Bab 2 Terbuka"]
+              M --> B
+              B -->|"Bab 2"| N["Slide Viewer: 4 Slide"]
+              N -->|"SELESAI"| O["Bab 2 Selesai"]
+              O --> B
+          </pre>
+        </div>
+      </div>
+    </section>
+
+
+    <div class="footer">
+      <p>KotoCraft &mdash; Game Edukasi Bahasa Jepang</p>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleCollapsible(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    // Intersection Observer for nav
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+    sections.forEach(s => observer.observe(s));
+
+    // Scroll shadow
+    window.addEventListener('scroll', () => {
+      document.getElementById('topNav').style.boxShadow =
+        window.scrollY > 20 ? '0 4px 20px rgba(0,0,0,0.4)' : 'none';
+    });
+  </script>
+
+</body>
+</html>
